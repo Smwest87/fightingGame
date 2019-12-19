@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/smwest87/fightingGame/game"
 )
@@ -9,10 +10,12 @@ import (
 func main() {
 	var g game.Game
 
-	start := make(chan int)
+	start := make(chan time.Time, 10)
 
-	go g.GameStart(start)
+	g.GameStart(cap(start), start)
 
-	timer := <-start
-	fmt.Println(timer)
+	for stamp := range start {
+		fmt.Println(stamp)
+	}
+
 }

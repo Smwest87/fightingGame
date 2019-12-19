@@ -14,11 +14,13 @@ type Game struct {
 	playerTwo fighter.Character
 }
 
-func (g Game) GameStart(start chan int) {
-	for g.time = 60; g.time > 0; g.time-- {
+func (g Game) GameStart(capacity int, start chan time.Time) {
+	for g.time = capacity; g.time > 0; g.time-- {
 		time.Sleep(1000 * time.Millisecond)
-		//fmt.Println(time.Now())
-		start <- g.time
+		now := time.Now()
+		start <- now
+		//start <- g.time
 
 	}
+	close(start)
 }
