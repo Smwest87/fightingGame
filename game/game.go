@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"math"
 	"strings"
 	"time"
 
@@ -50,6 +51,10 @@ func (g Game) RunGame() {
 
 	clock := make(chan GameState, 5)
 
+	// uncomment when these are ready for use
+	// p1Chan := make(chan fighter.PlayerChannel)
+	// p2Chan := make(chan fighter.PlayerChannel)
+
 	go g.GameStart(cap(clock), clock)
 
 	for stamp := range clock {
@@ -68,14 +73,16 @@ func (g Game) StartFrame() string {
 
 	renderP1 := "|"
 	p1Position := g.playerOne.Position.X
+	p1Index := int(math.Floor(p1Position))
 
 	renderP2 := "|"
 	p2Position := g.playerTwo.Position.X
+	p2Index := int(math.Floor(p2Position))
 
 	ground := []string{"-", "-", "-", "-", "-", "-", "-", "-", "-", "-"}
 
-	ground[p1Position-1] = renderP1
-	ground[p2Position-1] = renderP2
+	ground[p1Index-1] = renderP1
+	ground[p2Index-1] = renderP2
 
 	return fmt.Sprintf("     %v     \r\n%v", g.State.GameClock, strings.Join(ground, ""))
 

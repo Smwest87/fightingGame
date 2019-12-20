@@ -1,4 +1,4 @@
-package action
+package actions
 
 import (
 	"time"
@@ -13,24 +13,26 @@ type Action struct {
 
 // Attack struct represents data for attack action
 type Attack struct {
-	Damage   float64
-	Range    float64
-	Startup  time.Duration
-	Active   time.Duration
-	Recovery time.Duration
+	Damage    float64
+	Range     float64
+	StartTime time.Time
+	Startup   time.Duration
+	Active    time.Duration
+	Recovery  time.Duration
 }
 
 // Block contains all block related info
 type Block struct {
-	Defense  float64
-	Startup  time.Duration
-	Active   time.Duration
-	Recovery time.Duration
+	Defense   float64
+	StartTime time.Time
+	Startup   time.Duration
+	Active    time.Duration
+	Recovery  time.Duration
 }
 
 // Movement contains all movement input info
 type Movement struct {
-	Xdist float64
-	Ydist float64
-	Speed float64
+	StartTime time.Time
+	Xdist     float64
+	Ydist     float64
 }
