@@ -7,19 +7,17 @@ import (
 	"github.com/smwest87/fightingGame/level"
 )
 
-type position struct {
-	x int
-	y int
+type Position struct {
+	X int
+	Y int
 }
 
 // Character struct contains all player-level info
 type Character struct {
-	position
-	speed       int
-	hp          int
-	attack      int
-	isAttacking bool
-	isBlocking  bool
+	Position
+	Speed  int
+	Hp     int
+	Attack int
 }
 
 // Fighter interface contains all possible player actions
@@ -35,47 +33,31 @@ type Fighter interface {
 	endBlock()
 }
 
-func (p *Character) endAttack() {
-	p.isAttacking = false
-}
-
-func (p *Character) endBlock() {
-	p.isBlocking = false
-}
-
 func (p *Character) movePlayer(playerOne *Character, playerTwo *Character, l *level.Level, distance int) error {
 
-	if playerOne.position.x+distance <= 0 || playerOne.position.x+distance >= l.Size {
-		return fmt.Errorf("Player cannot leave the map, Player New Position : %v", playerOne.position.x+distance)
+	if playerOne.Position.X+distance <= 0 || playerOne.Position.X+distance >= l.Size {
+		return fmt.Errorf("Player cannot leave the map, Player New Position : %v", playerOne.Position.X+distance)
 	}
 
-	if playerOne.position.x+distance == playerTwo.position.x {
+	if playerOne.Position.X+distance == playerTwo.Position.X {
 		return errors.New("players cannot have the same position")
 	}
-	playerOne.position.x += distance
+	playerOne.Position.X += distance
 
 	return nil
 }
 
 func (p *Character) jab(opponent *Character, l *level.Level) error {
-	p.isAttacking = true
-	defer p.endAttack()
-	if p.position.x-opponent.position.x == 1 || p.position.x-opponent.position.x == -1 {
-		if !opponent.isBlocking {
-			opponent.hp -= p.attack
-			return nil
-		}
+	if p.Position.X-opponent.Position.X == 1 || p.Position.X-opponent.Position.X == -1 {
+		opponent.Hp -= p.Attack
+		return nil
 	}
 	return errors.New("Opponent out of range")
 }
 
 func (p *Character) block(opponent *Character) error {
-	p.isBlocking = true
-	defer p.endBlock()
-	if opponent.isAttacking {
-		if p.position.x-opponent.position.x == 1 || p.position.x-opponent.position.x == -1 {
-			return nil
-		}
+	if p.Position.X-opponent.Position.X == 1 || p.Position.X-opponent.Position.X == -1 {
+		return nil
 	}
 	return errors.New("No effective attack to block")
 }
