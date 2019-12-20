@@ -21,11 +21,10 @@ type GameState struct {
 }
 
 func (g Game) GameStart(capacity int, start chan GameState) {
-	for g.State.gameClock = capacity; g.State.gameClock > 0; g.State.gameClock-- {
-		time.Sleep(1000 * time.Millisecond)
+	for g.State.gameClock = capacity; g.State.gameClock >= 0; g.State.gameClock-- {
 		g.State.timeStamp = time.Now()
 		start <- g.State
-		//start <- g.time
+		time.Sleep(1000 * time.Millisecond)
 
 	}
 	close(start)
