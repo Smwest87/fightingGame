@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/smwest87/fightingGame/game"
 )
@@ -10,7 +9,7 @@ import (
 func main() {
 	var g game.Game
 
-	start := make(chan time.Time, 60)
+	start := make(chan game.GameState, 60)
 
 	go g.GameStart(cap(start), start)
 

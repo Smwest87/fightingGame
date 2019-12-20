@@ -12,13 +12,19 @@ type Game struct {
 	location  level.Level
 	playerOne fighter.Character
 	playerTwo fighter.Character
+	State     GameState
 }
 
-func (g Game) GameStart(capacity int, start chan time.Time) {
-	for g.time = capacity; g.time > 0; g.time-- {
+type GameState struct {
+	timeStamp time.Time
+	gameClock int
+}
+
+func (g Game) GameStart(capacity int, start chan GameState) {
+	for g.State.gameClock = capacity; g.State.gameClock > 0; g.State.gameClock-- {
 		time.Sleep(1000 * time.Millisecond)
-		now := time.Now()
-		start <- now
+		g.State.timeStamp = time.Now()
+		start <- g.State
 		//start <- g.time
 
 	}
