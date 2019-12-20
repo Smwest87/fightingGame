@@ -15,11 +15,9 @@ type Position struct {
 // Character struct contains all player-level info
 type Character struct {
 	Position
-	Speed       int
-	Hp          int
-	Attack      int
-	IsAttacking bool
-	IsBlocking  bool
+	Speed  int
+	Hp     int
+	Attack int
 }
 
 // Fighter interface contains all possible player actions
@@ -33,14 +31,6 @@ type Fighter interface {
 	endAttack()
 
 	endBlock()
-}
-
-func (p *Character) endAttack() {
-	p.IsAttacking = false
-}
-
-func (p *Character) endBlock() {
-	p.IsBlocking = false
 }
 
 func (p *Character) movePlayer(playerOne *Character, playerTwo *Character, l *level.Level, distance int) error {
@@ -58,24 +48,16 @@ func (p *Character) movePlayer(playerOne *Character, playerTwo *Character, l *le
 }
 
 func (p *Character) jab(opponent *Character, l *level.Level) error {
-	p.IsAttacking = true
-	defer p.endAttack()
 	if p.Position.X-opponent.Position.X == 1 || p.Position.X-opponent.Position.X == -1 {
-		if !opponent.IsBlocking {
-			opponent.Hp -= p.Attack
-			return nil
-		}
+		opponent.Hp -= p.Attack
+		return nil
 	}
 	return errors.New("Opponent out of range")
 }
 
 func (p *Character) block(opponent *Character) error {
-	p.IsBlocking = true
-	defer p.endBlock()
-	if opponent.IsAttacking {
-		if p.Position.X-opponent.Position.X == 1 || p.Position.X-opponent.Position.X == -1 {
-			return nil
-		}
+	if p.Position.X-opponent.Position.X == 1 || p.Position.X-opponent.Position.X == -1 {
+		return nil
 	}
 	return errors.New("No effective attack to block")
 }
